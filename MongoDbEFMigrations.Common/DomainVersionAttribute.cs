@@ -1,17 +1,24 @@
 namespace MongoDbEFMigrations.Common;
 
-[System.AttributeUsage(AttributeTargets.Class,
+[AttributeUsage(AttributeTargets.Class,
         AllowMultiple = false, Inherited = false)
 ]
 public class DomainVersionAttribute : Attribute
 {
-    public int Version;
+    public int Version { get; }
 
     public DomainVersionAttribute(int version)
     {
         Version = version;
-
     }
 
-    public int GetVersion() => Version;
+    public static int GetVersion<T>()
+    {
+        var attr = GetCustomAttributes(typeof(T))
+            .ToList().FirstOrDefault(a => a is DomainVersionAttribute) ??
+                   throw new InvalidOperationException($"No DomainVersionAttribute found on type {typeof(T).Name}");
+
+        return ((DomainVersionAttribute)attr).Version;
+    }
 }
+

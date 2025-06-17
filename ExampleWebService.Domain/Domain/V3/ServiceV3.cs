@@ -9,7 +9,7 @@ public class ServiceV3(Repository repo, MigrationRunner<IMigrate<CustomerDbEntit
     {
         var repoLayer = new CustomerDbEntity
         {
-            Version = customerDomainLayer.Version,
+            Version = DomainVersionAttribute.GetVersion<CustomerV3>(),
             CustomerId = customerDomainLayer.CustomerId,
             FullName = customerDomainLayer.FullName,
             Age = customerDomainLayer.Age

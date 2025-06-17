@@ -35,7 +35,6 @@ public class MigrationRunnerTests
         };
         
         var result = _runner.MigrateToVersion<CustomerV4>(entity);
-        result.Version.Should().Be(4);
         result.CustomerId.Should().Be("c1");
         result.FullName.Should().Be("John Doe");
         result.DateOfBirth.Should().Be(DateTime.Today.AddYears(-40));

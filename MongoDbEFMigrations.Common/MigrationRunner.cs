@@ -11,12 +11,9 @@ public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
     }
 
-    public D MigrateToVersion<D>(E source) where D : IVersionedDomainObject
+    public D MigrateToVersion<D>(E source)
     {
-        var attr = Attribute.GetCustomAttributes(typeof(D))
-            .ToList().First(a => a is DomainVersionAttribute);
-
-        var targetVersion = ((DomainVersionAttribute)attr).Version;
+        var targetVersion = DomainVersionAttribute.GetVersion<D>();
         
         E result = source;
         
