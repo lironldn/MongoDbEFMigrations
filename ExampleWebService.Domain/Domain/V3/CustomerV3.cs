@@ -1,9 +1,11 @@
+using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Domain.V3;
 
+[DomainVersion(3)]
 public class CustomerV3 : IVersionedDomainObject
 {
     public int Version => 3;

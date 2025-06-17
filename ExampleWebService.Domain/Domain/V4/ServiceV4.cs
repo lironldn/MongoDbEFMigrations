@@ -5,7 +5,6 @@ namespace ExampleWebService.Domain.Domain.V4;
 
 public class ServiceV4(Repository repo, MigrationRunner<IMigrate<CustomerDbEntity>, CustomerDbEntity> migrationRunner)
 {
-    public int DomainVersion => 4;
     public async Task AddAsync(CustomerV4 customerDomainLayer)
     {
         var repoLayer = new CustomerDbEntity
@@ -23,13 +22,7 @@ public class ServiceV4(Repository repo, MigrationRunner<IMigrate<CustomerDbEntit
         var repoLayer = await repo.GetAsync(id);
         if (repoLayer == null) return null;
         
-        var upgraded = migrationRunner.UpgradeToVersion(repoLayer, DomainVersion);
-        return new CustomerV4
-        {
-            _id = upgraded._id,
-            CustomerId = upgraded.CustomerId ?? throw new ArgumentNullException(nameof(upgraded.CustomerId)),
-            FullName = upgraded.FullName ?? throw new ArgumentNullException(nameof(upgraded.FullName)),
-            DateOfBirth = upgraded.DateOfBirth ?? throw new ArgumentNullException(nameof(upgraded.DateOfBirth)),
-        };
+        var upgraded = migrationRunner.MigrateToVersion<CustomerV4>(repoLayer);
+        return upgraded;
     }
 }

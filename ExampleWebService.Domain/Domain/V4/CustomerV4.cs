@@ -4,6 +4,7 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Domain.V4;
 
+[DomainVersion(4)]
 public class CustomerV4 : IVersionedDomainObject
 {
     public int Version => 4;

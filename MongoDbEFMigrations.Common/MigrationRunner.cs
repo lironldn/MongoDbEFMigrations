@@ -1,3 +1,5 @@
+using AutoMapper;
+
 namespace MongoDbEFMigrations.Common;
 
 public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
@@ -9,16 +11,46 @@ public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
     }
 
-    public E UpgradeToVersion(E source, int targetVersion)
+    public D MigrateToVersion<D>(E source) where D : IVersionedDomainObject
     {
+        var attr = Attribute.GetCustomAttributes(typeof(D))
+            .ToList().First(a => a is DomainVersionAttribute);
+
+        var targetVersion = ((DomainVersionAttribute)attr).Version;
+        
         E result = source;
-        foreach (var upgrader in _upgraders
-                     .Where(u => u.TargetVersion > source.Version.GetValueOrDefault(0) &&
-                                 u.TargetVersion <= targetVersion)
-                     .OrderBy(u => u.TargetVersion))
+        
+        if (targetVersion > source.Version)
         {
-            result = upgrader.Upgrade(result);
+            // upgrade V0 -> V1 -> V2 etc.
+            foreach (var upgrader in _upgraders
+                         .Where(u => u.TargetVersion > source.Version.GetValueOrDefault(0) &&
+                                     u.TargetVersion <= targetVersion)
+                         .OrderBy(u => u.TargetVersion))
+            {
+                result = upgrader.Upgrade(result);
+            }
         }
-        return result;
+        else if (targetVersion < source.Version)
+        {
+            // downgrade V3 -> V2 -> V1 etc.
+            foreach (var upgrader in _upgraders
+                         .Where(u => u.TargetVersion >= targetVersion &&
+                                     u.TargetVersion < source.Version.GetValueOrDefault(0))
+                         .OrderByDescending(u => u.TargetVersion))
+            {
+                result = upgrader.Downgrade(result);
+            }
+        }
+
+        // this automapping assumes the migrated Repository object has been brought in line
+        // with the domain object; if that is not the case, the mapping configuration
+        // could be made more bespoke rather than generic as below
+        var domain = new MapperConfiguration(cfg =>
+            cfg.CreateMap<E, D>())
+            .CreateMapper()
+            .Map<D>(result);
+        
+        return domain;
     }
 }
