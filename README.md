@@ -1,4 +1,4 @@
-# MongoEFMigrations
+# MongoDbEFMigrations
 
 ## What is it?
 One problem when using Entity Framework (EF) with MongoDB is that of data migrations. This includes breaking changes where:
