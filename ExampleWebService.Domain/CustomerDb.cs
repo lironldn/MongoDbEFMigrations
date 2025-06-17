@@ -1,8 +1,8 @@
+using ExampleWebService.Domain.Repo;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.EntityFrameworkCore.Extensions;
-using MongoWithEFAndMapper.Repo;
 
-namespace MongoWithEFAndMapper;
+namespace ExampleWebService.Domain;
 
 public class CustomerDb(DbContextOptions<CustomerDb> options) : DbContext(options)
 {

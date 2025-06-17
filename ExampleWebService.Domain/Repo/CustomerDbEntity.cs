@@ -1,7 +1,8 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDbEFMigrations.Common;
 
-namespace MongoWithEFAndMapper.Repo;
+namespace ExampleWebService.Domain.Repo;
 
 public class CustomerDbEntity : IDbEntity
 {

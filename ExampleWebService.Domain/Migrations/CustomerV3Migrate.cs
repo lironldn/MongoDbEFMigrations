@@ -1,10 +1,11 @@
-using MongoWithEFAndMapper.Repo;
+using ExampleWebService.Domain.Repo;
+using MongoDbEFMigrations.Common;
 
-namespace MongoWithEFAndMapper.Migrations;
+namespace ExampleWebService.Domain.Migrations;
 
-public class CustomerV2Migrate : IMigrate<CustomerDbEntity>
+public class CustomerV3Migrate : IMigrate<CustomerDbEntity>
 {
-    public int TargetVersion => 2;
+    public int TargetVersion => 3;
 
     public CustomerDbEntity Upgrade(CustomerDbEntity source)
     {
@@ -12,10 +13,11 @@ public class CustomerV2Migrate : IMigrate<CustomerDbEntity>
         
         return new CustomerDbEntity
         {
-            Version = 2,
+            Version = 3,
             _id = source._id,
             CustomerId = source.CustomerId,
-            FullName = $"This guy: {source.FullName}"
+            FullName = source.FullName,
+            Age = source.Age ?? 35
         };
     }
 

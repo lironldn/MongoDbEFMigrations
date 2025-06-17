@@ -1,6 +1,4 @@
-using MongoWithEFAndMapper.Repo;
-
-namespace MongoWithEFAndMapper.Migrations;
+namespace MongoDbEFMigrations.Common;
 
 public interface IMigrate<T> where T : IDbEntity
 {

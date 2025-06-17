@@ -4,16 +4,19 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>MongoWithEFAndMapper</RootNamespace>
+        <RootNamespace>ExampleWebService</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.14"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
         <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
         <PackageReference Include="MongoDB.Entities" Version="24.1.1" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ExampleWebService.Domain\ExampleWebService.Domain.csproj" />
+      <ProjectReference Include="..\MongoDbEFMigrations.Common\MongoDbEFMigrations.Common.csproj" />
     </ItemGroup>
 
 </Project>

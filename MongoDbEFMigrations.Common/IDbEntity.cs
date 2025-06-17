@@ -1,4 +1,4 @@
-namespace MongoWithEFAndMapper.Repo;
+namespace MongoDbEFMigrations.Common;
 
 public interface IDbEntity
 {

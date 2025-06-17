@@ -1,6 +1,7 @@
-using MongoWithEFAndMapper.Repo;
+using ExampleWebService.Domain.Repo;
+using MongoDbEFMigrations.Common;
 
-namespace MongoWithEFAndMapper.Migrations;
+namespace ExampleWebService.Domain.Migrations;
 
 public class CustomerV4Migrate : IMigrate<CustomerDbEntity>
 {

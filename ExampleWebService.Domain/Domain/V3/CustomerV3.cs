@@ -1,8 +1,8 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoWithEFAndMapper.Domain.V4;
+using MongoDbEFMigrations.Common;
 
-namespace MongoWithEFAndMapper.Domain.V3;
+namespace ExampleWebService.Domain.Domain.V3;
 
 public class CustomerV3 : IVersionedDomainObject
 {

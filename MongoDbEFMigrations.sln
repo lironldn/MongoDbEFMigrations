@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWebService", "ExampleWebService\ExampleWebService.csproj", "{8B49D9BD-88F8-4984-AC24-90A01E3B7B1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbEFMigrations.Common", "MongoDbEFMigrations.Common\MongoDbEFMigrations.Common.csproj", "{92673486-47F2-4916-9FF2-90F0E5EDB59B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWebService.Domain", "ExampleWebService.Domain\ExampleWebService.Domain.csproj", "{3182C951-6E36-4ABA-A9D1-666EABCC3070}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B49D9BD-88F8-4984-AC24-90A01E3B7B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B49D9BD-88F8-4984-AC24-90A01E3B7B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B49D9BD-88F8-4984-AC24-90A01E3B7B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B49D9BD-88F8-4984-AC24-90A01E3B7B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92673486-47F2-4916-9FF2-90F0E5EDB59B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92673486-47F2-4916-9FF2-90F0E5EDB59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92673486-47F2-4916-9FF2-90F0E5EDB59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92673486-47F2-4916-9FF2-90F0E5EDB59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3182C951-6E36-4ABA-A9D1-666EABCC3070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3182C951-6E36-4ABA-A9D1-666EABCC3070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3182C951-6E36-4ABA-A9D1-666EABCC3070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3182C951-6E36-4ABA-A9D1-666EABCC3070}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

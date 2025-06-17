@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace MongoWithEFAndMapper.Repo;
+namespace ExampleWebService.Domain.Repo;
 
 public class Repository(CustomerDb db)
 {

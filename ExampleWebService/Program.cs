@@ -1,10 +1,12 @@
 ﻿
+using ExampleWebService;
+using ExampleWebService.Domain;
+using ExampleWebService.Domain.Domain.V3;
+using ExampleWebService.Domain.Domain.V4;
+using ExampleWebService.Domain.Migrations;
+using ExampleWebService.Domain.Repo;
 using Microsoft.EntityFrameworkCore;
-using MongoWithEFAndMapper;
-using MongoWithEFAndMapper.Domain.V3;
-using MongoWithEFAndMapper.Domain.V4;
-using MongoWithEFAndMapper.Migrations;
-using MongoWithEFAndMapper.Repo;
+using MongoDbEFMigrations.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,4 @@
-namespace MongoWithEFAndMapper.Domain;
+namespace MongoDbEFMigrations.Common;
 
 public interface IVersionedDomainObject
 {

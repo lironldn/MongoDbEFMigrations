@@ -1,6 +1,4 @@
-using MongoWithEFAndMapper.Repo;
-
-namespace MongoWithEFAndMapper.Migrations;
+namespace MongoDbEFMigrations.Common;
 
 public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
 {
