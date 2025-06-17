@@ -9,7 +9,7 @@ public class CustomerV3 : IVersionedDomainObject
     public int Version => 3;
 
     [BsonId]
-    public required ObjectId _id { get; init; }
+    public ObjectId _id { get; init; }
     
     public required string CustomerId { get; init; }
     public required string FullName { get; init; }

@@ -15,7 +15,7 @@ public class CustomerV2Migrate : IMigrate<CustomerDbEntity>
             Version = 2,
             _id = source._id,
             CustomerId = source.CustomerId,
-            FullName = $"Sir {source.FullName}"
+            FullName = $"This guy: {source.FullName}"
         };
     }
 

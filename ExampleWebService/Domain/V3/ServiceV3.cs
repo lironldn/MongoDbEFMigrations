@@ -11,7 +11,7 @@ public class ServiceV3(Repository repo, MigrationRunner<IMigrate<CustomerDbEntit
         var repoLayer = new CustomerDbEntity
         {
             Version = customerDomainLayer.Version,
-            _id = customerDomainLayer._id,
+            CustomerId = customerDomainLayer.CustomerId,
             FullName = customerDomainLayer.FullName,
             Age = customerDomainLayer.Age
         };
