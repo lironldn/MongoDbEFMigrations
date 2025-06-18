@@ -2,20 +2,20 @@ using AutoMapper;
 
 namespace MongoDbEFMigrations.Common;
 
-public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
+public class MigrationRunner<T> where T : IDbEntity
 {
-    private readonly IEnumerable<M> _upgraders;
+    private readonly IEnumerable<IMigrate<T>> _upgraders;
 
-    public MigrationRunner(IEnumerable<M> upgraders)
+    public MigrationRunner(IEnumerable<IMigrate<T>> upgraders)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
     }
 
-    public D MigrateToVersion<D>(E source)
+    public D MigrateToVersion<D>(T source)
     {
         var targetVersion = DomainVersionAttribute.GetVersion<D>();
         
-        E result = source;
+        T result = source;
         
         if (targetVersion > source.Version)
         {
@@ -44,7 +44,7 @@ public class MigrationRunner<M,E> where M : IMigrate<E> where E : IDbEntity
         // with the domain object; if that is not the case, the mapping configuration
         // could be made more bespoke rather than generic as below
         var domain = new MapperConfiguration(cfg =>
-            cfg.CreateMap<E, D>())
+            cfg.CreateMap<T, D>())
             .CreateMapper()
             .Map<D>(result);
         

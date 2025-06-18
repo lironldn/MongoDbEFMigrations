@@ -7,12 +7,12 @@ namespace MongoDbEFMigrations.Common.UnitTests;
 
 public class MigrationRunnerTests
 {
-    private MigrationRunner<IMigrate<CustomerDbEntity>, CustomerDbEntity> _runner;
+    private MigrationRunner<CustomerDbEntity> _runner;
 
     [SetUp]
     public void Setup()
     {
-        _runner = new MigrationRunner<IMigrate<CustomerDbEntity>, CustomerDbEntity>(
+        _runner = new MigrationRunner<CustomerDbEntity>(
             new List<IMigrate<CustomerDbEntity>>
             {
                 new CustomerV1Migrate(),
