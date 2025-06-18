@@ -4,7 +4,7 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Repo;
 
-public class CustomerDbEntity : IDbEntity
+public record CustomerDbEntity : IDbEntity
 {
     public int? Version { get; set; }
 

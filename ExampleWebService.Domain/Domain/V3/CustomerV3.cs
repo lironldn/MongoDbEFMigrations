@@ -6,7 +6,7 @@ using MongoDbEFMigrations.Common;
 namespace ExampleWebService.Domain.Domain.V3;
 
 [DomainVersion(3)]
-public class CustomerV3
+public record CustomerV3
 {
     [BsonId]
     public ObjectId _id { get; init; }
