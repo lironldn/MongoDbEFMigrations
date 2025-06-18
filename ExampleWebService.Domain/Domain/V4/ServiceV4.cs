@@ -12,7 +12,7 @@ public class ServiceV4(Repository repo, MigrationRunner<CustomerDbEntity> migrat
             Version = DomainVersionAttribute.GetVersion<CustomerV4>(),
             CustomerId = customerDomainLayer.CustomerId,
             FullName = customerDomainLayer.FullName,
-            DateOfBirth = customerDomainLayer.DateOfBirth
+            DateOfBirth = customerDomainLayer.Birthday
         };
         await repo.AddAsync(repoLayer);
     }

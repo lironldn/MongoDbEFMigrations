@@ -12,5 +12,5 @@ public record CustomerV4
     
     public required string CustomerId { get; init; }
     public required string FullName { get; init; }
-    public required DateTime DateOfBirth { get; init; }
+    public required DateTime Birthday { get; init; }
 }

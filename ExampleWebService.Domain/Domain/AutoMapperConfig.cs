@@ -12,7 +12,9 @@ public static class AutoMapperConfig
         var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CustomerDbEntity, CustomerV3>();
-                cfg.CreateMap<CustomerDbEntity, CustomerV4>();
+                cfg.CreateMap<CustomerDbEntity, CustomerV4>()
+                    .ForMember(dest => dest.Birthday, opt
+                        => opt.MapFrom(src => src.DateOfBirth));
             });
 
         return mapperConfig.CreateMapper();

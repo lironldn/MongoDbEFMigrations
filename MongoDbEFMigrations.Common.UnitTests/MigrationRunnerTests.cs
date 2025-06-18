@@ -1,3 +1,4 @@
+using ExampleWebService.Domain.Domain;
 using ExampleWebService.Domain.Domain.V4;
 using ExampleWebService.Domain.Migrations;
 using ExampleWebService.Domain.Repo;
@@ -19,7 +20,8 @@ public class MigrationRunnerTests
                 new CustomerV2Migrate(),
                 new CustomerV3Migrate(),
                 new CustomerV4Migrate()
-            }
+            },
+            AutoMapperConfig.CreateMapper()
         );
     }
 
@@ -37,6 +39,6 @@ public class MigrationRunnerTests
         var result = _runner.MigrateToVersion<CustomerV4>(entity);
         result.CustomerId.Should().Be("c1");
         result.FullName.Should().Be("John Doe");
-        result.DateOfBirth.Should().Be(DateTime.Today.AddYears(-40));
+        result.Birthday.Should().Be(DateTime.Today.AddYears(-40));
     }
 }
