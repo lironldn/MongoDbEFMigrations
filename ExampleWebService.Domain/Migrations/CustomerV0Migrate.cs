@@ -14,11 +14,12 @@ public class CustomerV0Migrate : IMigrate<CustomerDbEntity>
 
     public CustomerDbEntity Downgrade(CustomerDbEntity source)
     {
+        var name = source.FullName?.Split(' ');
         return new CustomerDbEntity
         {
             CustomerId = source.CustomerId,
-            FirstName = source.FullName?.Split(' ')[0] ?? null,
-            LastName = source.FullName?.Split(' ')[1] ?? null,
+            FirstName = name?[0] ?? null,
+            LastName = name?[1] ?? null
         };
     }
 }
