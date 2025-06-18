@@ -3,17 +3,15 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDbEFMigrations.Common;
 
-namespace ExampleWebService.Domain.Domain.V3;
+namespace ExampleWebService.Domain.Domain.V0;
 
-[DomainVersion(3)]
-public record CustomerV3
+[DomainVersion(0)]
+public record CustomerV0
 {
-    public const int DefaultAge = 35;
-    
     [BsonId]
     public ObjectId _id { get; init; }
     
     public required string CustomerId { get; init; }
-    public required string FullName { get; init; }
-    public required int Age { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
 }

@@ -16,12 +16,18 @@ public class CustomerV2Migrate : IMigrate<CustomerDbEntity>
             Version = 2,
             _id = source._id,
             CustomerId = source.CustomerId,
-            FullName = $"This guy: {source.FullName}"
+            FullName = $"This one -> {source.FullName}"
         };
     }
 
     public CustomerDbEntity Downgrade(CustomerDbEntity source)
     {
-        throw new NotImplementedException();
+        return new CustomerDbEntity
+        {
+            Version = source.Version,
+            _id = source._id,
+            CustomerId = source.CustomerId,
+            FullName = source.FullName
+        };
     }
 }

@@ -1,8 +1,8 @@
-﻿
-using AutoMapper;
-using ExampleWebService;
-using ExampleWebService.Domain;
+﻿using ExampleWebService.Domain;
 using ExampleWebService.Domain.Domain;
+using ExampleWebService.Domain.Domain.V0;
+using ExampleWebService.Domain.Domain.V1;
+using ExampleWebService.Domain.Domain.V2;
 using ExampleWebService.Domain.Domain.V3;
 using ExampleWebService.Domain.Domain.V4;
 using ExampleWebService.Domain.Migrations;
@@ -26,6 +26,7 @@ var customerUpgrader = new MigrationRunner<CustomerDbEntity>
 (
     new List<IMigrate<CustomerDbEntity>>
     {
+        new CustomerV0Migrate(),
         new CustomerV1Migrate(),
         new CustomerV2Migrate(),
         new CustomerV3Migrate(),
@@ -36,10 +37,25 @@ var customerUpgrader = new MigrationRunner<CustomerDbEntity>
 builder.Services.AddSingleton(customerUpgrader);
 
 builder.Services.AddTransient<Repository>();
+builder.Services.AddTransient<ServiceV0>();
+builder.Services.AddTransient<ServiceV1>();
+builder.Services.AddTransient<ServiceV2>();
 builder.Services.AddTransient<ServiceV3>();
 builder.Services.AddTransient<ServiceV4>();
 
 var app = builder.Build();
+
+// service v0
+app.MapGet("/customer/v0/{id}", (string id, ServiceV0 service) => service.GetAsync(id));
+app.MapPost("/customer/v0/", (CustomerV0 customer, ServiceV0 service) => service.AddAsync(customer));
+
+// service v1
+app.MapGet("/customer/v1/{id}", (string id, ServiceV1 service) => service.GetAsync(id));
+app.MapPost("/customer/v1/", (CustomerV1 customer, ServiceV1 service) => service.AddAsync(customer));
+
+// service v3
+app.MapGet("/customer/v2/{id}", (string id, ServiceV2 service) => service.GetAsync(id));
+app.MapPost("/customer/v2/", (CustomerV2 customer, ServiceV2 service) => service.AddAsync(customer));
 
 // service v3
 app.MapGet("/customer/v3/{id}", (string id, ServiceV3 service) => service.GetAsync(id));

@@ -1,3 +1,4 @@
+using ExampleWebService.Domain.Domain.V3;
 using ExampleWebService.Domain.Repo;
 using MongoDbEFMigrations.Common;
 
@@ -17,12 +18,21 @@ public class CustomerV3Migrate : IMigrate<CustomerDbEntity>
             _id = source._id,
             CustomerId = source.CustomerId,
             FullName = source.FullName,
-            Age = source.Age ?? 35
+            Age = source.Age ?? CustomerV3.DefaultAge
         };
     }
 
     public CustomerDbEntity Downgrade(CustomerDbEntity source)
     {
-        throw new NotImplementedException();
+        var age = DateTime.Today.Year - source.DateOfBirth?.Year;
+        if (!source.DateOfBirth.HasValue) age = CustomerV3.DefaultAge;
+        return new CustomerDbEntity
+        {
+            Version = TargetVersion,
+            _id = source._id,
+            CustomerId = source.CustomerId,
+            FullName = source.FullName,
+            Age = age
+        };
     }
 }

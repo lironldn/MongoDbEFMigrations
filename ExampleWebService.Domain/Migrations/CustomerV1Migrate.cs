@@ -9,8 +9,6 @@ public class CustomerV1Migrate : IMigrate<CustomerDbEntity>
 
     public CustomerDbEntity Upgrade(CustomerDbEntity source)
     {
-        if (source.Version.GetValueOrDefault(0) != TargetVersion - 1) return source;
-        
         return new CustomerDbEntity
         {
             Version = 1,
@@ -22,6 +20,12 @@ public class CustomerV1Migrate : IMigrate<CustomerDbEntity>
 
     public CustomerDbEntity Downgrade(CustomerDbEntity source)
     {
-        throw new NotImplementedException();
+        return new CustomerDbEntity
+        {
+            Version = TargetVersion,
+            _id = source._id,
+            CustomerId = source.CustomerId,
+            FullName = source.FullName?.Replace("This one -> ", "") ?? null
+        };
     }
 }

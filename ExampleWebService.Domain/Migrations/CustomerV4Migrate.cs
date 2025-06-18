@@ -23,6 +23,6 @@ public class CustomerV4Migrate : IMigrate<CustomerDbEntity>
 
     public CustomerDbEntity Downgrade(CustomerDbEntity source)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Nothing to downgrade from");
     }
 }
