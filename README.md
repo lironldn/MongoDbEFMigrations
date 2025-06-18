@@ -26,10 +26,20 @@ Clone the repo and run it against a local MongoDB - you many need to change the 
 Once running, you can hit different versions of the service to see how different versions of the data are returned.
 
 ```
+POST http://localhost:5184/customer/v0
+
+{
+    "CustomerId": "c0",
+    "FirstName": "John",
+    "LastName": "Doe"
+}
+```
+
+```
 POST http://localhost:5184/customer/v3
 
 {
-    "CustomerId": "c1",
+    "CustomerId": "c3",
     "FullName": "John Doe",
     "Age": 30
 }
@@ -39,7 +49,7 @@ POST http://localhost:5184/customer/v3
 POST http://localhost:5184/customer/v4
 
 {
-    "CustomerId": "c2",
+    "CustomerId": "c4",
     "FullName": "John Doe",
     "DateOfBirth": "1978-12-01"
 }
@@ -47,9 +57,14 @@ POST http://localhost:5184/customer/v4
 
 Then try fetching the two items and see how they are upgraded.
 ```
-GET http://localhost:5184/customer/v3/c1 - no upgrade
-GET http://localhost:5184/customer/v4/c1 - upgraded (DateOfBirth calculated from Age)
+GET http://localhost:5184/customer/v4/c0 - upgrade V0 -> V1 -> V2 -> V3 -> V4
 ```
 ```
-GET http://localhost:5184/customer/v4/c2 - no upgrade
+GET http://localhost:5184/customer/v3/c3 - no upgrade
+GET http://localhost:5184/customer/v4/c3 - upgraded (DateOfBirth calculated from Age)
+```
+```
+GET http://localhost:5184/customer/v0/c4 - downgrade V4 -> V3 -> V2 -> V1 -> V0
+GET http://localhost:5184/customer/v3/c4 - downgrade V4 -> V3
+GET http://localhost:5184/customer/v4/c4 - no upgrade
 ```
