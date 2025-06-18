@@ -5,10 +5,12 @@ namespace MongoDbEFMigrations.Common;
 public class MigrationRunner<T> where T : IDbEntity
 {
     private readonly IEnumerable<IMigrate<T>> _upgraders;
+    private readonly IMapper _mapper;
 
-    public MigrationRunner(IEnumerable<IMigrate<T>> upgraders)
+    public MigrationRunner(IEnumerable<IMigrate<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
+        _mapper = mapper;
     }
 
     public D MigrateToVersion<D>(T source)
@@ -39,15 +41,8 @@ public class MigrationRunner<T> where T : IDbEntity
                 result = upgrader.Downgrade(result);
             }
         }
-
-        // this automapping assumes the migrated Repository object has been brought in line
-        // with the domain object; if that is not the case, the mapping configuration
-        // could be made more bespoke rather than generic as below
-        var domain = new MapperConfiguration(cfg =>
-            cfg.CreateMap<T, D>())
-            .CreateMapper()
-            .Map<D>(result);
         
+        var domain = _mapper.Map<D>(result);
         return domain;
     }
 }

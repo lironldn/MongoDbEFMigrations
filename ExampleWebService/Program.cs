@@ -1,6 +1,8 @@
 ﻿
+using AutoMapper;
 using ExampleWebService;
 using ExampleWebService.Domain;
+using ExampleWebService.Domain.Domain;
 using ExampleWebService.Domain.Domain.V3;
 using ExampleWebService.Domain.Domain.V4;
 using ExampleWebService.Domain.Migrations;
@@ -28,7 +30,8 @@ var customerUpgrader = new MigrationRunner<CustomerDbEntity>
         new CustomerV2Migrate(),
         new CustomerV3Migrate(),
         new CustomerV4Migrate()
-    }
+    },
+    AutoMapperConfig.CreateMapper()
 );
 builder.Services.AddSingleton(customerUpgrader);
 
