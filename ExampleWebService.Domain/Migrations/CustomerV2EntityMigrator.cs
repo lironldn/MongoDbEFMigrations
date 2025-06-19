@@ -3,28 +3,24 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Migrations;
 
-public class CustomerV2Migrate : IMigrate<CustomerDbEntity>
+public class CustomerV2EntityMigrator : EntityMigratorBase<CustomerDbEntity>
 {
-    public int TargetVersion => 2;
+    public override int TargetVersion => 2;
 
-    public CustomerDbEntity Upgrade(CustomerDbEntity source)
+    protected override CustomerDbEntity UpgradeEntity(CustomerDbEntity source)
     {
-        if (source.Version.GetValueOrDefault(0) != TargetVersion - 1) return source;
-        
         return new CustomerDbEntity
         {
-            Version = 2,
             _id = source._id,
             CustomerId = source.CustomerId,
             FullName = $"This one -> {source.FullName}"
         };
     }
 
-    public CustomerDbEntity Downgrade(CustomerDbEntity source)
+    protected override CustomerDbEntity DowngradeEntity(CustomerDbEntity source)
     {
         return new CustomerDbEntity
         {
-            Version = source.Version,
             _id = source._id,
             CustomerId = source.CustomerId,
             FullName = source.FullName

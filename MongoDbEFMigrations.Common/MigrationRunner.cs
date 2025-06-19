@@ -4,10 +4,10 @@ namespace MongoDbEFMigrations.Common;
 
 public class MigrationRunner<T> where T : IDbEntity
 {
-    private readonly IEnumerable<IMigrate<T>> _upgraders;
+    private readonly IEnumerable<EntityMigratorBase<T>> _upgraders;
     private readonly IMapper _mapper;
 
-    public MigrationRunner(IEnumerable<IMigrate<T>> upgraders, IMapper mapper)
+    public MigrationRunner(IEnumerable<EntityMigratorBase<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
         _mapper = mapper;
@@ -41,6 +41,9 @@ public class MigrationRunner<T> where T : IDbEntity
                 result = upgrader.Downgrade(result);
             }
         }
+        
+        if (result.Version != targetVersion)
+            throw new EntityVersionConverterException($"Failed to migrate to version {targetVersion}. Check all Converters are registered.");
         
         var domain = _mapper.Map<D>(result);
         return domain;

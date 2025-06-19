@@ -24,13 +24,13 @@ builder.Services.AddDbContext<CustomerDb>(x =>
 
 var customerUpgrader = new MigrationRunner<CustomerDbEntity>
 (
-    new List<IMigrate<CustomerDbEntity>>
+    new List<EntityMigratorBase<CustomerDbEntity>>
     {
-        new CustomerV0Migrate(),
-        new CustomerV1Migrate(),
-        new CustomerV2Migrate(),
-        new CustomerV3Migrate(),
-        new CustomerV4Migrate()
+        new CustomerV0EntityMigrator(),
+        new CustomerV1EntityMigrator(),
+        new CustomerV2EntityMigrator(),
+        new CustomerV3EntityMigrator(),
+        new CustomerV4EntityMigrator()
     },
     AutoMapperConfig.CreateMapper()
 );
