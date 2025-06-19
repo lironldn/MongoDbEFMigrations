@@ -3,7 +3,7 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Domain.V4;
 
-public class ServiceV4(Repository repo, MigrationRunner<CustomerDbEntity> migrationRunner)
+public class ServiceV4(Repository repo, EntityVersionConverter<CustomerDbEntity> entityVersionConverter)
 {
     public async Task AddAsync(CustomerV4 customerDomainLayer)
     {
@@ -22,7 +22,7 @@ public class ServiceV4(Repository repo, MigrationRunner<CustomerDbEntity> migrat
         var repoLayer = await repo.GetAsync(id);
         if (repoLayer == null) return null;
         
-        var upgraded = migrationRunner.MigrateToVersion<CustomerV4>(repoLayer);
+        var upgraded = entityVersionConverter.ToDomain<CustomerV4>(repoLayer);
         return upgraded;
     }
 }

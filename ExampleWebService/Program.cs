@@ -22,7 +22,7 @@ builder.Services.AddDbContext<CustomerDb>(x =>
     x.UseMongoDB(dbConnString, dbName);
 });
 
-var customerUpgrader = new MigrationRunner<CustomerDbEntity>
+var customerUpgrader = new EntityVersionConverter<CustomerDbEntity>
 (
     new List<EntityMigratorBase<CustomerDbEntity>>
     {
