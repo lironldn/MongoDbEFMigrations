@@ -18,13 +18,13 @@ public class EntityVersionConverterToDomainTests
     public void Setup()
     {
         _runner = new EntityVersionConverter<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV0EntityMigrator(),
-                new CustomerV1EntityMigrator(),
-                new CustomerV2EntityMigrator(),
-                new CustomerV3EntityMigrator(),
-                new CustomerV4EntityMigrator()
+                new CustomerV0DbEntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV2DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
+                new CustomerV4DbEntityMigrator()
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -217,10 +217,10 @@ public class EntityVersionConverterToDomainTests
     public void UpgradeV1_to_V3_WithMissingV2()
     {
         _runner = new EntityVersionConverter<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV3EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -242,10 +242,10 @@ public class EntityVersionConverterToDomainTests
     public void DownGradeV3_to_V1_WithMissingV2()
     {
         _runner = new EntityVersionConverter<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV3EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -268,10 +268,10 @@ public class EntityVersionConverterToDomainTests
     public void UpgradeV1_to_V3_WithMissingV3()
     {
         _runner = new EntityVersionConverter<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV2EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV2DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );

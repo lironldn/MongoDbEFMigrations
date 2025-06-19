@@ -4,10 +4,10 @@ namespace MongoDbEFMigrations.Common;
 
 public class EntityVersionConverter<T> where T : IDbEntity
 {
-    private readonly IEnumerable<EntityMigratorBase<T>> _upgraders;
+    private readonly IEnumerable<DbEntityMigratorBase<T>> _upgraders;
     private readonly IMapper _mapper;
 
-    public EntityVersionConverter(IEnumerable<EntityMigratorBase<T>> upgraders, IMapper mapper)
+    public EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
         _mapper = mapper;
