@@ -18,13 +18,13 @@ public class MigrationRunnerTests
     public void Setup()
     {
         _runner = new MigrationRunner<CustomerDbEntity>(
-            new List<IMigrate<CustomerDbEntity>>
+            new List<EntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV0Migrate(),
-                new CustomerV1Migrate(),
-                new CustomerV2Migrate(),
-                new CustomerV3Migrate(),
-                new CustomerV4Migrate()
+                new CustomerV0EntityMigrator(),
+                new CustomerV1EntityMigrator(),
+                new CustomerV2EntityMigrator(),
+                new CustomerV3EntityMigrator(),
+                new CustomerV4EntityMigrator()
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -95,6 +95,23 @@ public class MigrationRunnerTests
         result.Birthday.Should().Be(DateTime.Today.AddYears(-40));
     }
     
+    
+    [Test]
+    public void UpgradeV0_to_V4()
+    {
+        var entity = new CustomerDbEntity
+        {
+            CustomerId = "c0",
+            FirstName = "John",
+            LastName = "Doe"
+        };
+        
+        var result = _runner.MigrateToVersion<CustomerV4>(entity);
+        result.CustomerId.Should().Be("c0");
+        result.FullName.Should().Be("This one -> John Doe");
+        result.Birthday.Should().Be(DateTime.Today.AddYears(-1 * CustomerV3.DefaultAge));
+    }
+
     [Test]
     public void UpgradeV4_to_V4()
     {
@@ -174,6 +191,24 @@ public class MigrationRunnerTests
         
         var result = _runner.MigrateToVersion<CustomerV0>(entity);
         result.CustomerId.Should().Be("c1");
+        result.FirstName.Should().Be("John");
+        result.LastName.Should().Be("Doe");
+    }
+    
+    [Test]
+    public void DowngradeV4_to_V0()
+    {
+        var dob = DateTime.Today.AddYears(-40);
+        var entity = new CustomerDbEntity
+        {
+            Version = 4,
+            CustomerId = "c4",
+            FullName = "This one -> John Doe",
+            DateOfBirth = dob
+        };
+        
+        var result = _runner.MigrateToVersion<CustomerV0>(entity);
+        result.CustomerId.Should().Be("c4");
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
     }
