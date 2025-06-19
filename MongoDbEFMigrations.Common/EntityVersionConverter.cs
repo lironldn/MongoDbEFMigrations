@@ -2,22 +2,22 @@ using AutoMapper;
 
 namespace MongoDbEFMigrations.Common;
 
-public class MigrationRunner<T> where T : IDbEntity
+public class EntityVersionConverter<T> where T : IDbEntity
 {
-    private readonly IEnumerable<EntityMigratorBase<T>> _upgraders;
+    private readonly IEnumerable<DbEntityMigratorBase<T>> _upgraders;
     private readonly IMapper _mapper;
 
-    public MigrationRunner(IEnumerable<EntityMigratorBase<T>> upgraders, IMapper mapper)
+    public EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
         _mapper = mapper;
     }
 
-    public D MigrateToVersion<D>(T source)
+    public D ToDomain<D>(T source)
     {
         var targetVersion = DomainVersionAttribute.GetVersion<D>();
         
-        T result = source;
+        var result = source;
         
         if (targetVersion > source.Version.GetValueOrDefault(0))
         {
@@ -47,5 +47,12 @@ public class MigrationRunner<T> where T : IDbEntity
         
         var domain = _mapper.Map<D>(result);
         return domain;
+    }
+
+    public T ToDbEntity<D>(D domainObject)
+    {
+        var entity = _mapper.Map<T>(domainObject);
+        entity.Version = DomainVersionAttribute.GetVersion<D>();
+        return entity;
     }
 }

@@ -1,6 +1,6 @@
 namespace MongoDbEFMigrations.Common;
 
-public abstract class EntityMigratorBase<T> where T : IDbEntity
+public abstract class DbEntityMigratorBase<T> where T : IDbEntity
 {
     public abstract int TargetVersion { get; }
     protected abstract T UpgradeEntity(T source);

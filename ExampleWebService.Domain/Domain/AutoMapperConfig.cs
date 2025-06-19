@@ -21,6 +21,14 @@ public static class AutoMapperConfig
                 cfg.CreateMap<CustomerDbEntity, CustomerV4>()
                     .ForMember(dest => dest.Birthday, opt
                         => opt.MapFrom(src => src.DateOfBirth));
+                
+                cfg.CreateMap<CustomerV0, CustomerDbEntity>();
+                cfg.CreateMap<CustomerV1, CustomerDbEntity>();
+                cfg.CreateMap<CustomerV2, CustomerDbEntity>();
+                cfg.CreateMap<CustomerV3, CustomerDbEntity>();
+                cfg.CreateMap<CustomerV4, CustomerDbEntity>()
+                    .ForMember(dest => dest.DateOfBirth, opt
+                        => opt.MapFrom(src => src.Birthday));
             });
 
         return mapperConfig.CreateMapper();

@@ -3,7 +3,7 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Migrations;
 
-public class CustomerV1EntityMigrator : EntityMigratorBase<CustomerDbEntity>
+public class CustomerV1DbEntityMigrator : DbEntityMigratorBase<CustomerDbEntity>
 {
     public override int TargetVersion => 1;
 

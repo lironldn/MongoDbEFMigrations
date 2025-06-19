@@ -10,21 +10,21 @@ using FluentAssertions;
 
 namespace MongoDbEFMigrations.Common.UnitTests;
 
-public class MigrationRunnerTests
+public class EntityVersionConverterToDomainTests
 {
-    private MigrationRunner<CustomerDbEntity> _runner;
+    private EntityVersionConverter<CustomerDbEntity> _runner;
 
     [SetUp]
     public void Setup()
     {
-        _runner = new MigrationRunner<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+        _runner = new EntityVersionConverter<CustomerDbEntity>(
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV0EntityMigrator(),
-                new CustomerV1EntityMigrator(),
-                new CustomerV2EntityMigrator(),
-                new CustomerV3EntityMigrator(),
-                new CustomerV4EntityMigrator()
+                new CustomerV0DbEntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV2DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
+                new CustomerV4DbEntityMigrator()
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -41,7 +41,7 @@ public class MigrationRunnerTests
             LastName = "Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV1>(entity);
+        var result = _runner.ToDomain<CustomerV1>(entity);
         result.CustomerId.Should().Be("c0");
         result.FullName.Should().Be("John Doe");
     }
@@ -56,7 +56,7 @@ public class MigrationRunnerTests
             FullName = "John Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV2>(entity);
+        var result = _runner.ToDomain<CustomerV2>(entity);
         result.CustomerId.Should().Be("c1");
         result.FullName.Should().Be("This one -> John Doe");
     }
@@ -72,7 +72,7 @@ public class MigrationRunnerTests
             FullName = "This one -> John Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV3>(entity);
+        var result = _runner.ToDomain<CustomerV3>(entity);
         result.CustomerId.Should().Be("c2");
         result.FullName.Should().Be("This one -> John Doe");
         result.Age.Should().Be(CustomerV3.DefaultAge);
@@ -89,7 +89,7 @@ public class MigrationRunnerTests
             Age = 40
         };
         
-        var result = _runner.MigrateToVersion<CustomerV4>(entity);
+        var result = _runner.ToDomain<CustomerV4>(entity);
         result.CustomerId.Should().Be("c3");
         result.FullName.Should().Be("John Doe");
         result.Birthday.Should().Be(DateTime.Today.AddYears(-40));
@@ -106,7 +106,7 @@ public class MigrationRunnerTests
             LastName = "Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV4>(entity);
+        var result = _runner.ToDomain<CustomerV4>(entity);
         result.CustomerId.Should().Be("c0");
         result.FullName.Should().Be("This one -> John Doe");
         result.Birthday.Should().Be(DateTime.Today.AddYears(-1 * CustomerV3.DefaultAge));
@@ -124,7 +124,7 @@ public class MigrationRunnerTests
             DateOfBirth = dob
         };
         
-        var result = _runner.MigrateToVersion<CustomerV4>(entity);
+        var result = _runner.ToDomain<CustomerV4>(entity);
         result.CustomerId.Should().Be("c4");
         result.FullName.Should().Be("This one -> John Doe");
         result.Birthday.Should().Be(dob);
@@ -142,7 +142,7 @@ public class MigrationRunnerTests
             DateOfBirth = dob
         };
         
-        var result = _runner.MigrateToVersion<CustomerV3>(entity);
+        var result = _runner.ToDomain<CustomerV3>(entity);
         result.CustomerId.Should().Be("c4");
         result.FullName.Should().Be("This one -> John Doe");
         result.Age.Should().Be(40);
@@ -159,7 +159,7 @@ public class MigrationRunnerTests
             Age = 40
         };
         
-        var result = _runner.MigrateToVersion<CustomerV2>(entity);
+        var result = _runner.ToDomain<CustomerV2>(entity);
         result.CustomerId.Should().Be("c3");
         result.FullName.Should().Be("This one -> John Doe");
     }
@@ -174,7 +174,7 @@ public class MigrationRunnerTests
             FullName = "This one -> John Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV1>(entity);
+        var result = _runner.ToDomain<CustomerV1>(entity);
         result.CustomerId.Should().Be("c2");
         result.FullName.Should().Be("John Doe");
     }
@@ -189,7 +189,7 @@ public class MigrationRunnerTests
             FullName = "John Doe"
         };
         
-        var result = _runner.MigrateToVersion<CustomerV0>(entity);
+        var result = _runner.ToDomain<CustomerV0>(entity);
         result.CustomerId.Should().Be("c1");
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
@@ -207,7 +207,7 @@ public class MigrationRunnerTests
             DateOfBirth = dob
         };
         
-        var result = _runner.MigrateToVersion<CustomerV0>(entity);
+        var result = _runner.ToDomain<CustomerV0>(entity);
         result.CustomerId.Should().Be("c4");
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
@@ -216,11 +216,11 @@ public class MigrationRunnerTests
     [Test]
     public void UpgradeV1_to_V3_WithMissingV2()
     {
-        _runner = new MigrationRunner<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+        _runner = new EntityVersionConverter<CustomerDbEntity>(
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV3EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -232,7 +232,7 @@ public class MigrationRunnerTests
             FullName = "John Doe"
         };
         
-        var act = () => _runner.MigrateToVersion<CustomerV3>(entity);
+        var act = () => _runner.ToDomain<CustomerV3>(entity);
 
         act.Should().Throw<EntityVersionConverterException>()
             .WithMessage("Cannot upgrade from version 1 to Target version 3. Check all Converters are registered.");
@@ -241,11 +241,11 @@ public class MigrationRunnerTests
     [Test]
     public void DownGradeV3_to_V1_WithMissingV2()
     {
-        _runner = new MigrationRunner<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+        _runner = new EntityVersionConverter<CustomerDbEntity>(
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV3EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV3DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -258,7 +258,7 @@ public class MigrationRunnerTests
             Age = 40
         };
         
-        var act = () => _runner.MigrateToVersion<CustomerV1>(entity);
+        var act = () => _runner.ToDomain<CustomerV1>(entity);
 
         act.Should().Throw<EntityVersionConverterException>()
             .WithMessage("Cannot downgrade from version 3 to Target version 1. Check all Converters are registered.");
@@ -267,11 +267,11 @@ public class MigrationRunnerTests
     [Test]
     public void UpgradeV1_to_V3_WithMissingV3()
     {
-        _runner = new MigrationRunner<CustomerDbEntity>(
-            new List<EntityMigratorBase<CustomerDbEntity>>
+        _runner = new EntityVersionConverter<CustomerDbEntity>(
+            new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
-                new CustomerV1EntityMigrator(),
-                new CustomerV2EntityMigrator(),
+                new CustomerV1DbEntityMigrator(),
+                new CustomerV2DbEntityMigrator(),
             },
             AutoMapperConfig.CreateMapper()
         );
@@ -283,7 +283,7 @@ public class MigrationRunnerTests
             FullName = "John Doe"
         };
         
-        var act = () => _runner.MigrateToVersion<CustomerV3>(entity);
+        var act = () => _runner.ToDomain<CustomerV3>(entity);
 
         act.Should().Throw<EntityVersionConverterException>()
             .WithMessage("Failed to migrate to version 3. Check all Converters are registered.");
