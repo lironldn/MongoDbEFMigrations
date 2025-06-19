@@ -212,4 +212,80 @@ public class MigrationRunnerTests
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
     }
+    
+    [Test]
+    public void UpgradeV1_to_V3_WithMissingV2()
+    {
+        _runner = new MigrationRunner<CustomerDbEntity>(
+            new List<EntityMigratorBase<CustomerDbEntity>>
+            {
+                new CustomerV1EntityMigrator(),
+                new CustomerV3EntityMigrator(),
+            },
+            AutoMapperConfig.CreateMapper()
+        );
+        
+        var entity = new CustomerDbEntity
+        {
+            Version = 1,
+            CustomerId = "c1",
+            FullName = "John Doe"
+        };
+        
+        var act = () => _runner.MigrateToVersion<CustomerV3>(entity);
+
+        act.Should().Throw<EntityVersionConverterException>()
+            .WithMessage("Cannot upgrade from version 1 to Target version 3. Check all Converters are registered.");
+    }
+    
+    [Test]
+    public void DownGradeV3_to_V1_WithMissingV2()
+    {
+        _runner = new MigrationRunner<CustomerDbEntity>(
+            new List<EntityMigratorBase<CustomerDbEntity>>
+            {
+                new CustomerV1EntityMigrator(),
+                new CustomerV3EntityMigrator(),
+            },
+            AutoMapperConfig.CreateMapper()
+        );
+        
+        var entity = new CustomerDbEntity
+        {
+            Version = 3,
+            CustomerId = "c3",
+            FullName = "This one -> John Doe",
+            Age = 40
+        };
+        
+        var act = () => _runner.MigrateToVersion<CustomerV1>(entity);
+
+        act.Should().Throw<EntityVersionConverterException>()
+            .WithMessage("Cannot downgrade from version 3 to Target version 1. Check all Converters are registered.");
+    }    
+    
+    [Test]
+    public void UpgradeV1_to_V3_WithMissingV3()
+    {
+        _runner = new MigrationRunner<CustomerDbEntity>(
+            new List<EntityMigratorBase<CustomerDbEntity>>
+            {
+                new CustomerV1EntityMigrator(),
+                new CustomerV2EntityMigrator(),
+            },
+            AutoMapperConfig.CreateMapper()
+        );
+        
+        var entity = new CustomerDbEntity
+        {
+            Version = 1,
+            CustomerId = "c1",
+            FullName = "John Doe"
+        };
+        
+        var act = () => _runner.MigrateToVersion<CustomerV3>(entity);
+
+        act.Should().Throw<EntityVersionConverterException>()
+            .WithMessage("Failed to migrate to version 3. Check all Converters are registered.");
+    }
 }
