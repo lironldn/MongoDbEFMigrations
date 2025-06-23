@@ -9,6 +9,7 @@ using ExampleWebService.Domain.Migrations;
 using ExampleWebService.Domain.Repo;
 using Microsoft.EntityFrameworkCore;
 using MongoDbEFMigrations.Common;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddDbContext<CustomerDb>(x =>
     x.UseMongoDB(dbConnString, dbName);
 });
 
-var customerUpgrader = new EntityVersionConverter<CustomerDbEntity>
+var customerUpgrader = new CustomerDbEntityConverter
 (
     new List<DbEntityMigratorBase<CustomerDbEntity>>
     {

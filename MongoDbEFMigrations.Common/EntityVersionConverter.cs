@@ -2,12 +2,12 @@ using AutoMapper;
 
 namespace MongoDbEFMigrations.Common;
 
-public class EntityVersionConverter<T> where T : IDbEntity
+public abstract class EntityVersionConverter<T> where T : IDbEntity
 {
     private readonly IEnumerable<DbEntityMigratorBase<T>> _upgraders;
     private readonly IMapper _mapper;
 
-    public EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
+    protected EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
         _mapper = mapper;
@@ -16,9 +16,9 @@ public class EntityVersionConverter<T> where T : IDbEntity
     public D ToDomain<D>(T source)
     {
         var targetVersion = DomainVersionAttribute.GetVersion<D>();
-        
+
         var result = source;
-        
+
         if (targetVersion > source.Version.GetValueOrDefault(0))
         {
             // upgrade V0 -> V1 -> V2 etc.
@@ -41,10 +41,10 @@ public class EntityVersionConverter<T> where T : IDbEntity
                 result = upgrader.Downgrade(result);
             }
         }
-        
+
         if (result.Version != targetVersion)
             throw new EntityVersionConverterException($"Failed to migrate to version {targetVersion}. Check all Converters are registered.");
-        
+
         var domain = _mapper.Map<D>(result);
         return domain;
     }

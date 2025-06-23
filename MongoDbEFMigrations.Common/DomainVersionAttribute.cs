@@ -15,8 +15,8 @@ public class DomainVersionAttribute : Attribute
     public static int GetVersion<T>()
     {
         var attr = GetCustomAttributes(typeof(T))
-            .ToList().FirstOrDefault(a => a is DomainVersionAttribute) ??
-                   throw new InvalidOperationException($"No DomainVersionAttribute found on type {typeof(T).Name}");
+            .FirstOrDefault(a => a is DomainVersionAttribute) ??
+                   throw new EntityVersionConverterException($"No DomainVersionAttribute found on type {typeof(T).Name}");
 
         return ((DomainVersionAttribute)attr).Version;
     }

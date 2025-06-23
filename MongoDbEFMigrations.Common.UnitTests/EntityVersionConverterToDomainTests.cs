@@ -12,22 +12,12 @@ namespace MongoDbEFMigrations.Common.UnitTests;
 
 public class EntityVersionConverterToDomainTests
 {
-    private EntityVersionConverter<CustomerDbEntity> _runner;
+    private CustomerDbEntityConverter _runner;
 
     [SetUp]
     public void Setup()
     {
-        _runner = new EntityVersionConverter<CustomerDbEntity>(
-            new List<DbEntityMigratorBase<CustomerDbEntity>>
-            {
-                new CustomerV0DbEntityMigrator(),
-                new CustomerV1DbEntityMigrator(),
-                new CustomerV2DbEntityMigrator(),
-                new CustomerV3DbEntityMigrator(),
-                new CustomerV4DbEntityMigrator()
-            },
-            AutoMapperConfig.CreateMapper()
-        );
+        _runner = new CustomerDbEntityConverter();
     }
 
     [Test]
@@ -216,7 +206,7 @@ public class EntityVersionConverterToDomainTests
     [Test]
     public void UpgradeV1_to_V3_WithMissingV2()
     {
-        _runner = new EntityVersionConverter<CustomerDbEntity>(
+        _runner = new CustomerDbEntityConverter(
             new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
                 new CustomerV1DbEntityMigrator(),
@@ -241,7 +231,7 @@ public class EntityVersionConverterToDomainTests
     [Test]
     public void DownGradeV3_to_V1_WithMissingV2()
     {
-        _runner = new EntityVersionConverter<CustomerDbEntity>(
+        _runner = new CustomerDbEntityConverter(
             new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
                 new CustomerV1DbEntityMigrator(),
@@ -267,7 +257,7 @@ public class EntityVersionConverterToDomainTests
     [Test]
     public void UpgradeV1_to_V3_WithMissingV3()
     {
-        _runner = new EntityVersionConverter<CustomerDbEntity>(
+        _runner = new CustomerDbEntityConverter(
             new List<DbEntityMigratorBase<CustomerDbEntity>>
             {
                 new CustomerV1DbEntityMigrator(),

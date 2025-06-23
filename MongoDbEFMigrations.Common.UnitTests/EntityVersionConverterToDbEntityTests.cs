@@ -16,7 +16,7 @@ public class EntityVersionConverterToDbEntityTests
     [SetUp]
     public void Setup()
     {
-        _runner = new EntityVersionConverter<CustomerDbEntity>(
+        _runner = new CustomerDbEntityConverter(
             new List<DbEntityMigratorBase<CustomerDbEntity>>(), // not used anyway
             AutoMapperConfig.CreateMapper()
         );
