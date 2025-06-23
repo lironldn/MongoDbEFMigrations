@@ -16,9 +16,9 @@ public class EntityVersionConverter<T> where T : IDbEntity
     public D ToDomain<D>(T source)
     {
         var targetVersion = DomainVersionAttribute.GetVersion<D>();
-        
+
         var result = source;
-        
+
         if (targetVersion > source.Version.GetValueOrDefault(0))
         {
             // upgrade V0 -> V1 -> V2 etc.
@@ -41,10 +41,10 @@ public class EntityVersionConverter<T> where T : IDbEntity
                 result = upgrader.Downgrade(result);
             }
         }
-        
+
         if (result.Version != targetVersion)
             throw new EntityVersionConverterException($"Failed to migrate to version {targetVersion}. Check all Converters are registered.");
-        
+
         var domain = _mapper.Map<D>(result);
         return domain;
     }

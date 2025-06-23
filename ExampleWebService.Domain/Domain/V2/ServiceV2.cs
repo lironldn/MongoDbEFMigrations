@@ -7,12 +7,7 @@ public class ServiceV2(Repository repo, EntityVersionConverter<CustomerDbEntity>
 {
     public async Task AddAsync(CustomerV2 customerDomainLayer)
     {
-        var repoLayer = new CustomerDbEntity
-        {
-            Version = DomainVersionAttribute.GetVersion<CustomerV2>(),
-            CustomerId = customerDomainLayer.CustomerId,
-            FullName = customerDomainLayer.FullName
-        };
+        var repoLayer = entityVersionConverter.ToDbEntity(customerDomainLayer);
         await repo.AddAsync(repoLayer);
     }
 
