@@ -2,12 +2,12 @@ using AutoMapper;
 
 namespace MongoDbEFMigrations.Common;
 
-public class EntityVersionConverter<T> where T : IDbEntity
+public abstract class EntityVersionConverter<T> where T : IDbEntity
 {
     private readonly IEnumerable<DbEntityMigratorBase<T>> _upgraders;
     private readonly IMapper _mapper;
 
-    public EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
+    protected EntityVersionConverter(IEnumerable<DbEntityMigratorBase<T>> upgraders, IMapper mapper)
     {
         _upgraders = upgraders.OrderBy(x => x.TargetVersion);
         _mapper = mapper;

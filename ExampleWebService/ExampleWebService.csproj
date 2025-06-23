@@ -11,7 +11,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.14"/>
         <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
         <PackageReference Include="MongoDB.Entities" Version="24.1.1" />
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.3" />
     </ItemGroup>
 
     <ItemGroup>
