@@ -23,19 +23,7 @@ builder.Services.AddDbContext<CustomerDb>(x =>
     x.UseMongoDB(dbConnString, dbName);
 });
 
-var customerUpgrader = new CustomerDbEntityConverter
-(
-    new List<DbEntityMigratorBase<CustomerDbEntity>>
-    {
-        new CustomerV0DbEntityMigrator(),
-        new CustomerV1DbEntityMigrator(),
-        new CustomerV2DbEntityMigrator(),
-        new CustomerV3DbEntityMigrator(),
-        new CustomerV4DbEntityMigrator()
-    },
-    AutoMapperConfig.CreateMapper()
-);
-builder.Services.AddSingleton(customerUpgrader);
+builder.Services.AddSingleton(new CustomerDbEntityConverter());
 
 builder.Services.AddTransient<Repository>();
 builder.Services.AddTransient<ServiceV0>();

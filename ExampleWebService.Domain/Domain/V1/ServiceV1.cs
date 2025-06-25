@@ -3,7 +3,7 @@ using MongoDbEFMigrations.Common;
 
 namespace ExampleWebService.Domain.Domain.V1;
 
-public class ServiceV1(Repository repo, EntityVersionConverter<CustomerDbEntity> entityVersionConverter)
+public class ServiceV1(Repository repo, CustomerDbEntityConverter entityVersionConverter)
 {
     public async Task AddAsync(CustomerV1 customerDomainLayer)
     {
